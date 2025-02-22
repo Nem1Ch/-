@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тетрис</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #222;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .game-container {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        canvas {
+            border: 2px solid white;
+        }
+
+        .score-board {
+            font-size: 24px;
+            background: #444;
+            padding: 20px;
+            border-radius: 10px;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .score-board span {
+            font-weight: bold;
+            font-size: 30px;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .controls button {
+            font-size: 20px;
+            padding: 10px;
+            margin: 0;
+            background: #444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .controls button:active {
+            background: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <canvas id="tetris" width="300" height="600"></canvas>
+        <div class="score-board">
+            Очки:<br>
+            <span id="score">0</span>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="left">⬅️</button>
+        <button id="rotate">🔄</button>
+        <button id="right">➡️</button>
+        <button id="down">⬇️</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("tetris");
+        const context = canvas.getContext("2d");
+        const scoreElement = document.getElementById("score");
+
+        const ROWS = 20, COLUMNS = 10, BLOCK_SIZE = 30;
+        let score = 0;
+
+        context.scale(BLOCK_SIZE, BLOCK_SIZE);
+        const arena = Array.from({ length: ROWS }, () => Array(COLUMNS).fill(null));
+
+        const colors = ["#FF0D0D", "#0DC2FF", "#0DFF72", "#F538FF", "#FF8E0D"];
+        const pieces = [
+            [[1, 1, 1, 1]],          // I
+            [[1, 1], [1, 1]],        // O
+            [[0, 1, 1], [1, 1, 0]],  // S
+            [[1, 1, 0], [0, 1, 1]],  // Z
+            [[1, 1, 1], [0, 1, 0]],  // T
+            [[1, 1, 1], [1, 0, 0]],  // L
+            [[1, 1, 1], [0, 0, 1]]   // J
+        ];
+
+        let piece = createPiece();
+        let pos = { x: 4, y: 0 };
+        let dropCounter = 0, lastTime = 0;
+
+        function createPiece() {
+            return {
+                shape: pieces[Math.floor(Math.random() * pieces.length)],
+                color: colors[Math.floor(Math.random() * colors.length)]
+            };
+        }
+
+        function collide() {
+            return piece.shape.some((row, y) => 
+                row.some((value, x) => 
+                    value !== 0 &&
+                    (arena[y + pos.y]?.[x + pos.x] !== null ||
+                    x + pos.x < 0 ||
+                    x + pos.x >= COLUMNS ||
+                    y + pos.y >= ROWS)
+                )
+            );
+        }
+
+        function merge() {
+            piece.shape.forEach((row, y) => {
+                row.forEach((value, x) => {
+                    if (value) {
+                        arena[y + pos.y][x + pos.x] = piece.color;
+                    }
+                });
+            });
+        }
+
+        function clearLines() {
+            let linesCleared = 0;
+            
+            for (let y = ROWS - 1; y >= 0; y--) {
+                if (arena[y].every(cell => cell !== null)) {
+                    arena.splice(y, 1);
+                    arena.unshift(Array(COLUMNS).fill(null));
+                    linesCleared++;
+                    y++; // Проверить ту же строку снова после удаления
+                }
+            }
+            
+            if (linesCleared > 0) {
+                updateScore(linesCleared * 100 * linesCleared); // Бонус за несколько линий
+            }
+        }
+
+        function updateScore(points) {
+            score += points;
+            scoreElement.textContent = score;
+            
+            if (score >= 1000) {
+                alert("Поздравляем! Переход на следующий уровень.");
+                window.location.href = "https://www.youtube.com/";
+            }
+        }
+
+        function drop() {
+            pos.y++;
+            if (collide()) {
+                pos.y--;
+                merge();
+                clearLines();
+                piece = createPiece();
+                pos = { x: 4, y: 0 };
+                
+                if (collide()) {
+                    alert(`Игра окончена! Счёт: ${score}`);
+                    arena.forEach(row => row.fill(null));
+                    score = 0;
+                    scoreElement.textContent = score;
+                }
+            }
+            dropCounter = 0;
+        }
+
+        function move(dir) {
+            pos.x += dir;
+            if (collide()) {
+                pos.x -= dir;
+                return false;
+            }
+            return true;
+        }
+
+        function rotatePiece() {
+            const rotated = piece.shape[0].map((_, i) =>
+                piece.shape.map(row => row[i]).reverse()
+            );
+            const previousShape = piece.shape;
+            piece.shape = rotated;
+            
+            if (collide()) {
+                piece.shape = previousShape;
+                return false;
+            }
+            return true;
+        }
+
+        function update(time = 0) {
+            const deltaTime = time - lastTime;
+            lastTime = time;
+            dropCounter += deltaTime;
+            
+            if (dropCounter > 1000) {
+                drop();
+            }
+            
+            draw();
+            requestAnimationFrame(update);
+        }
+
+        function draw() {
+            context.fillStyle = "#000";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Рисуем арену
+            arena.forEach((row, y) => {
+                row.forEach((value, x) => {
+                    if (value) {
+                        context.fillStyle = value;
+                        context.fillRect(x, y, 1, 1);
+                    }
+                });
+            });
+            
+            // Рисуем текущую фигуру
+            context.fillStyle = piece.color;
+            piece.shape.forEach((row, y) => {
+                row.forEach((value, x) => {
+                    if (value) {
+                        context.fillRect(x + pos.x, y + pos.y, 1, 1);
+                    }
+                });
+            });
+        }
+
+        // Управление
+        document.addEventListener("keydown", event => {
+            switch(event.keyCode) {
+                case 37: // ←
+                    move(-1);
+                    break;
+                case 39: // →
+                    move(1);
+                    break;
+                case 40: // ↓
+                    drop();
+                    break;
+                case 38: // ↑
+                    rotatePiece();
+                    break;
+            }
+        });
+
+        document.getElementById("left").addEventListener("click", () => move(-1));
+        document.getElementById("right").addEventListener("click", () => move(1));
+        document.getElementById("down").addEventListener("click", drop);
+        document.getElementById("rotate").addEventListener("click", rotatePiece);
+
+        update();
+    </script>
+</body>
+</html>
