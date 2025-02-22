@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поздравительная открытка</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            width: 450px;
+            height: 600px;
+            background-color: #ffcccb;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .card h1 {
+            font-size: 35px;
+            color: #ff6347;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: textAppear 3s forwards 1s;
+        }
+
+        .card p {
+            font-size: 18px;
+            color: #333;
+            line-height: 1.6;
+            opacity: 0;
+            animation: textAppear 4s forwards 2s;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 20px;
+            color: white;
+            background-color: #ff4500;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .button:hover {
+            background-color: #ff6347;
+        }
+
+        .petals {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+
+        .petal {
+            position: absolute;
+            width: 40px;
+            height: auto;
+            opacity: 0;
+            animation: fall linear infinite, drift linear infinite;
+        }
+
+        @keyframes textAppear {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes fall {
+            0% {
+                top: -10%;
+                opacity: 1;
+            }
+            100% {
+                top: 100%;
+                opacity: 0;
+            }
+        }
+
+        @keyframes drift {
+            0% {
+                transform: translateX(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateX(var(--drift)) rotate(15deg);
+            }
+            100% {
+                transform: translateX(calc(-1 * var(--drift))) rotate(-15deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>С Днем Рождения!</h1>
+        <p>Дорогой друг! Поздравляю тебя с этим чудесным днем! Пусть каждый момент будет наполнен счастьем, а впереди ждут только яркие и светлые события.Дорогой друг! Поздравляю тебя с этим чудесным днем! Пусть каждый момент будет наполнен счастьем, а впереди ждут только яркие и светлые события.Дорогой друг! Поздравляю тебя с этим чудесным днем! Пусть каждый момент будет наполнен счастьем, а впереди ждут только яркие и светлые события.</p>
+        <a href="tetris.html" class="button">Играть в Тетрис</a>
+    </div>
+
+    <div class="petals"></div>
+
+    <script>
+        function createPetals() {
+            const petalCount = 100;
+            const petalContainer = document.querySelector('.petals');
+            const petalImage = "images/klipartz.com (1).png";
+
+            for (let i = 0; i < petalCount; i++) {
+                const petal = document.createElement('img');
+                petal.classList.add('petal');
+                petal.src = petalImage;
+                
+                petal.style.left = Math.random() * 100 + 'vw';
+                
+                const size = Math.random() * 40 + 25;
+                petal.style.width = size + 'px';
+
+                const fallDuration = Math.random() * 2 + 5;
+                petal.style.animationDuration = `${fallDuration}s, ${fallDuration / 2}s`;
+                petal.style.animationDelay = Math.random() * 8 + 's';
+                petal.style.setProperty('--drift', Math.random() * 55 - 25 + 'px');
+
+                petalContainer.appendChild(petal);
+            }
+        }
+        createPetals();
+    </script>
+</body>
+</html>
