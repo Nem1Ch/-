@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Поздравление с Днем Рождения</title>
     <style>
-        /* Стили для открытки */
+        /* Обновленные стили открытки */
         body {
             margin: 0;
             height: 100vh;
             font-family: Arial, sans-serif;
             overflow: hidden;
+            background: linear-gradient(45deg, #ffd3d3, #ffe8a1, #b5e8ff);
         }
 
         .card-container {
@@ -20,186 +21,179 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f0f0f0;
-            transition: opacity 0.5s;
             z-index: 2;
         }
 
         .card {
-            width: 450px;
+            width: 90%;
+            max-width: 400px;
             height: 600px;
-            background-color: #ffcccb;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             text-align: center;
             position: relative;
+            backdrop-filter: blur(8px);
         }
 
         .card h1 {
-            font-size: 35px;
-            color: #ff6347;
-            margin-bottom: 20px;
+            font-size: 32px;
+            color: #e91e63;
+            margin: 20px 0;
             opacity: 0;
             animation: textAppear 3s forwards 1s;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .card p {
-            font-size: 18px;
+            font-size: 16px;
             color: #333;
             line-height: 1.6;
             opacity: 0;
             animation: textAppear 4s forwards 2s;
+            margin: 20px 0;
         }
 
         .button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 15px 30px;
-            font-size: 20px;
+            padding: 12px 25px;
+            font-size: 18px;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
             color: white;
-            background-color: #ff4500;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background 0.3s;
+            border-radius: 25px;
+            border: none;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            transition: transform 0.3s;
         }
 
         .button:hover {
-            background-color: #ff6347;
+            transform: scale(0.98);
         }
 
+        /* Стили для лепестков */
         .petals {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            pointer-events: none;
-        }
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
 
-        .petal {
-            position: absolute;
-            width: 40px;
-            height: auto;
-            opacity: 0;
-            animation: fall linear infinite, drift linear infinite;
-        }
+.petal {
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0;
+    animation: fall 6s linear infinite, drift 3s ease-in-out infinite alternate;
+}
+
+/* Анимация падения */
+@keyframes fall {
+    0% { 
+        transform: translateY(-10%) rotate(0deg); 
+        opacity: 0.8; 
+    }
+    100% { 
+        transform: translateY(110vh) rotate(30deg); 
+        opacity: 0; 
+    }
+}
+
+/* Легкое покачивание влево-вправо */
+@keyframes drift {
+    0% { transform: translateX(-5px); }
+    100% { transform: translateX(5px); }
+}
+
+
+        .petal1 { background-image: url('images/petal1.png'); }
+        .petal2 { background-image: url('images/petal2.png'); }
+
 
         @keyframes textAppear {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fall {
-            0% { top: -10%; opacity: 1; }
-            100% { top: 100%; opacity: 0; }
-        }
+    0% { 
+        transform: translateY(-10%) rotate(0deg); 
+        opacity: 0.8; 
+    }
+    100% { 
+        transform: translateY(110vh) rotate(30deg); 
+        opacity: 0; 
+    }
+}
+
 
         @keyframes drift {
-            0% { transform: translateX(0) rotate(0); }
-            50% { transform: translateX(var(--drift)) rotate(15deg); }
-            100% { transform: translateX(calc(-1 * var(--drift))) rotate(-15deg); }
+            0% { transform: translateX(-10px); }
+            100% { transform: translateX(10px); }
         }
 
-        /* Стили для игры (измененные) */
+        /* Стили для игры */
         .game-container {
             position: fixed;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
-            background: #222;
+            background: #1a1a1a;
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 3;
-            padding: 10px;
-        }
-
-        .tetris-game {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            width: 100%;
-            max-width: 400px;
         }
 
         #tetris {
-            border: 2px solid white;
-            width: 80vw;
-            height: 80vw;
+            width: 90vw;
+            height: 150vw;
             max-width: 300px;
-            max-height: 600px;
+            max-height: 500px;
+            border: 2px solid #444;
+            border-radius: 5px;
         }
 
         .score-board {
             font-size: 24px;
-            background: #444;
-            padding: 15px 25px;
-            border-radius: 10px;
             color: white;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        .score-board span {
-            font-weight: bold;
-            font-size: 32px;
-            display: block;
-            margin-top: 5px;
+            margin: 15px 0;
         }
 
         .controls {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
-            width: 100%;
+            width: 90%;
             max-width: 300px;
             margin-top: 20px;
             touch-action: manipulation;
         }
 
         .controls button {
-            font-size: 28px;
-            padding: 15px;
+            font-size: 34px;
+            padding: 20px;
             background: #444;
             color: white;
             border: none;
-            border-radius: 15px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: background 0.2s;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .controls button:active {
-            background: #666;
+            min-height: 70px;
         }
 
         #rotate {
             grid-column: 1 / 4;
+            font-size: 18px;
+            padding: 15px;
         }
 
         @media (max-width: 600px) {
             .controls button {
-                font-size: 24px;
-                padding: 12px;
-            }
-            
-            .score-board {
-                font-size: 20px;
-                padding: 10px 20px;
-            }
-            
-            .score-board span {
                 font-size: 28px;
+                padding: 15px;
             }
         }
     </style>
@@ -208,252 +202,235 @@
     <!-- Открытка -->
     <div class="card-container" id="cardContainer">
         <div class="card">
-            <h1>С Днем Рождения!</h1>
-            <p>Дорогой друг! Поздравляю тебя с этим чудесным днем! Пусть каждый момент будет наполнен счастьем, а впереди ждут только яркие и светлые события.</p>
-            <button class="button" onclick="showGame()">Играть в Тетрис</button>
+            <h1>🎉 С Днем Рождения! 🎂</h1>
+            <p>Дорогой друг! Пусть этот день будет наполнен радостью, смехом и теплом близких! Желаю ярких впечатлений и исполнения всех желаний! 🎈</p>
+            <button class="button" onclick="showGame()">Поиграем! 🎮</button>
         </div>
-        <div class="petals"></div>
+        <div class="petals" id="petals"></div>
     </div>
 
-    <!-- Игра Тетрис -->
+    <!-- Игра -->
     <div class="game-container" id="gameContainer">
-        <div class="tetris-game">
-            <div class="score-board">
-                Очки:<br>
-                <span id="score">0</span>
-            </div>
-            <canvas id="tetris"></canvas>
-            <div class="controls">
-                <button id="left">⬅️</button>
-                <button id="down">⬇️</button>
-                <button id="right">➡️</button>
-                <button id="rotate">🔄 Поворот</button>
-            </div>
+        <div class="score-board">Очки: <span id="score">0</span></div>
+        <canvas id="tetris"></canvas>
+        <div class="controls">
+            <button id="left">←</button>
+            <button id="down">↓</button>
+            <button id="right">→</button>
+            <button id="rotate">Повернуть</button>
         </div>
     </div>
 
     <script>
-        // Лепестки
+        // Генератор лепестков
         function createPetals() {
-            const petalCount = 100;
-            const petalContainer = document.querySelector('.petals');
-            const petalImage = "images/klipartz.com (1).png";
-
-            for (let i = 0; i < petalCount; i++) {
-                const petal = document.createElement('img');
-                petal.classList.add('petal');
-                petal.src = petalImage;
+            const container = document.getElementById('petals');
+            for(let i = 0; i < 150; i++) {
+                const petal = document.createElement('div');
+                const type = Math.random() > 0.5 ? 'petal1' : 'petal2';
+                petal.className = `petal ${type}`;
+                
                 petal.style.left = Math.random() * 100 + 'vw';
-                const size = Math.random() * 40 + 25;
-                petal.style.width = size + 'px';
-                const fallDuration = Math.random() * 2 + 5;
-                petal.style.animationDuration = `${fallDuration}s, ${fallDuration / 2}s`;
-                petal.style.animationDelay = Math.random() * 8 + 's';
-                petal.style.setProperty('--drift', Math.random() * 55 - 25 + 'px');
-                petalContainer.appendChild(petal);
+                petal.style.width = (25 + Math.random() * 20) + 'px';
+                petal.style.height = petal.style.width;
+                petal.style.animation = `
+                    fall ${6 + Math.random() * 4}s linear infinite, 
+                    drift ${2 + Math.random() * 2}s ease-in-out infinite alternate
+                `;
+                petal.style.animationDelay = Math.random() * 5 + 's';
+                
+                container.appendChild(petal);
             }
         }
         createPetals();
 
-        // Переключение на игру
+        // Инициализация игры
+        let canvas, context, scoreElement;
+        let BLOCK_SIZE, ROWS = 20, COLUMNS = 10;
+        let arena, piece, pos, score, dropCounter, lastTime;
+
+        const colors = ["#FF0D0D", "#0DC2FF", "#0DFF72", "#F538FF", "#FF8E0D"];
+        const pieces = [
+            [[1,1,1,1]], [[1,1],[1,1]], 
+            [[0,1,1],[1,1,0]], [[1,1,0],[0,1,1]], 
+            [[1,1,1],[0,1,0]], [[1,1,1],[1,0,0]], 
+            [[1,1,1],[0,0,1]]
+        ];
+
         function showGame() {
             document.getElementById('cardContainer').style.display = 'none';
             document.getElementById('gameContainer').style.display = 'flex';
             initializeGame();
         }
 
-        // Код Тетриса с добавлением сенсорного управления
         function initializeGame() {
-            const canvas = document.getElementById("tetris");
-            const context = canvas.getContext("2d");
-            const scoreElement = document.getElementById("score");
+            canvas = document.getElementById("tetris");
+            context = canvas.getContext("2d");
+            scoreElement = document.getElementById("score");
 
-            // Автоподстройка размера
             const setCanvasSize = () => {
-                const size = Math.min(window.innerWidth * 0.8, 300);
-                canvas.width = size;
-                canvas.height = size * 2;
+                const width = Math.min(window.innerWidth * 0.9, 300);
+                canvas.width = width;
+                canvas.height = width * 1.7;
+                BLOCK_SIZE = width / 10;
+                context.scale(BLOCK_SIZE, BLOCK_SIZE);
             };
             setCanvasSize();
             window.addEventListener('resize', setCanvasSize);
 
-            const BLOCK_SIZE = canvas.width / 10;
-            context.scale(BLOCK_SIZE, BLOCK_SIZE);
-
-            const ROWS = 20, COLUMNS = 10;
-            let score = 0;
-            const arena = Array.from({ length: ROWS }, () => Array(COLUMNS).fill(null));
-
-            const colors = ["#FF0D0D", "#0DC2FF", "#0DFF72", "#F538FF", "#FF8E0D"];
-            const pieces = [
-                [[1, 1, 1, 1]], [[1, 1], [1, 1]], 
-                [[0, 1, 1], [1, 1, 0]], [[1, 1, 0], [0, 1, 1]], 
-                [[1, 1, 1], [0, 1, 0]], [[1, 1, 1], [1, 0, 0]], 
-                [[1, 1, 1], [0, 0, 1]]
-            ];
-
-            let piece = createPiece();
-            let pos = { x: 4, y: 0 };
-            let dropCounter = 0, lastTime = 0;
+            arena = Array(ROWS).fill().map(() => Array(COLUMNS).fill(null));
+            score = 0;
+            piece = createPiece();
+            pos = {x: 4, y: 0};
+            dropCounter = 0;
+            lastTime = 0;
 
             // Сенсорное управление
-            let touchStartX = 0;
-            let touchStartY = 0;
-
+            let touchStartX = 0, touchStartY = 0;
             canvas.addEventListener('touchstart', e => {
                 touchStartX = e.touches[0].clientX;
                 touchStartY = e.touches[0].clientY;
                 e.preventDefault();
-            }, { passive: false });
+            }, {passive: false});
 
             canvas.addEventListener('touchend', e => {
                 const deltaX = e.changedTouches[0].clientX - touchStartX;
                 const deltaY = e.changedTouches[0].clientY - touchStartY;
-                
-                if (Math.abs(deltaX) > 30 || Math.abs(deltaY) > 30) {
-                    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                if(Math.abs(deltaX) > 30 || Math.abs(deltaY) > 30) {
+                    if(Math.abs(deltaX) > Math.abs(deltaY)) {
                         deltaX > 0 ? move(1) : move(-1);
                     } else {
                         deltaY > 0 ? drop() : rotatePiece();
                     }
                 }
                 e.preventDefault();
-            }, { passive: false });
+            }, {passive: false});
 
-            // Остальной код тетриса без изменений
-            function createPiece() {
-                return {
-                    shape: pieces[Math.floor(Math.random() * pieces.length)],
-                    color: colors[Math.floor(Math.random() * colors.length)]
-                };
-            }
-
-            function collide() {
-                return piece.shape.some((row, y) => 
-                    row.some((value, x) => 
-                        value !== 0 &&
-                        (arena[y + pos.y]?.[x + pos.x] !== null ||
-                        x + pos.x < 0 ||
-                        x + pos.x >= COLUMNS ||
-                        y + pos.y >= ROWS)
-                    )
-                );
-            }
-
-            function merge() {
-                piece.shape.forEach((row, y) => {
-                    row.forEach((value, x) => {
-                        if (value) arena[y + pos.y][x + pos.x] = piece.color;
-                    });
-                });
-            }
-
-            function clearLines() {
-                let linesCleared = 0;
-                for (let y = ROWS - 1; y >= 0; y--) {
-                    if (arena[y].every(cell => cell !== null)) {
-                        arena.splice(y, 1);
-                        arena.unshift(Array(COLUMNS).fill(null));
-                        linesCleared++;
-                        y++;
-                    }
-                }
-                if (linesCleared > 0) updateScore(linesCleared * 100 * linesCleared);
-            }
-
-            function updateScore(points) {
-                score += points;
-                scoreElement.textContent = score;
-                if (score >= 1000) {
-                    alert("Поздравляем! Переход на следующий уровень.");
-                    window.location.href = "https://www.youtube.com/";
-                }
-            }
-
-            function drop() {
-                pos.y++;
-                if (collide()) {
-                    pos.y--;
-                    merge();
-                    clearLines();
-                    piece = createPiece();
-                    pos = { x: 4, y: 0 };
-                    if (collide()) {
-                        alert(`Игра окончена! Счёт: ${score}`);
-                        arena.forEach(row => row.fill(null));
-                        score = 0;
-                        scoreElement.textContent = score;
-                    }
-                }
-                dropCounter = 0;
-            }
-
-            function move(dir) {
-                pos.x += dir;
-                if (collide()) {
-                    pos.x -= dir;
-                    return false;
-                }
-                return true;
-            }
-
-            function rotatePiece() {
-                const rotated = piece.shape[0].map((_, i) =>
-                    piece.shape.map(row => row[i]).reverse()
-                );
-                const previousShape = piece.shape;
-                piece.shape = rotated;
-                if (collide()) {
-                    piece.shape = previousShape;
-                    return false;
-                }
-                return true;
-            }
-
-            function update(time = 0) {
-                const deltaTime = time - lastTime;
-                lastTime = time;
-                dropCounter += deltaTime;
-                if (dropCounter > 1000) drop();
-                draw();
-                requestAnimationFrame(update);
-            }
-
-            function draw() {
-                context.fillStyle = "#000";
-                context.fillRect(0, 0, canvas.width, canvas.height);
-                arena.forEach((row, y) => {
-                    row.forEach((value, x) => {
-                        if (value) {
-                            context.fillStyle = value;
-                            context.fillRect(x, y, 1, 1);
-                        }
-                    });
-                });
-                context.fillStyle = piece.color;
-                piece.shape.forEach((row, y) => {
-                    row.forEach((value, x) => {
-                        if (value) context.fillRect(x + pos.x, y + pos.y, 1, 1);
-                    });
-                });
-            }
-
-            // Управление
-            document.addEventListener("keydown", event => {
-                switch(event.keyCode) {
-                    case 37: move(-1); break;
-                    case 39: move(1); break;
-                    case 40: drop(); break;
-                    case 38: rotatePiece(); break;
-                }
-            });
-
+            // Управление кнопками
             document.getElementById("left").addEventListener("click", () => move(-1));
             document.getElementById("right").addEventListener("click", () => move(1));
             document.getElementById("down").addEventListener("click", drop);
             document.getElementById("rotate").addEventListener("click", rotatePiece);
 
             update();
+        }
+
+        // Логика игры (без изменений)
+        function createPiece() {
+            return {
+                shape: pieces[Math.floor(Math.random() * pieces.length)],
+                color: colors[Math.floor(Math.random() * colors.length)]
+            };
+        }
+
+        function collide() {
+            return piece.shape.some((row, y) => 
+                row.some((value, x) => 
+                    value !== 0 &&
+                    (arena[y + pos.y]?.[x + pos.x] !== null ||
+                    x + pos.x < 0 ||
+                    x + pos.x >= COLUMNS ||
+                    y + pos.y >= ROWS)
+                )
+            );
+        }
+
+        function merge() {
+            piece.shape.forEach((row, y) => {
+                row.forEach((value, x) => {
+                    if (value) arena[y + pos.y][x + pos.x] = piece.color;
+                });
+            });
+        }
+
+        function clearLines() {
+            let linesCleared = 0;
+            for (let y = ROWS - 1; y >= 0; y--) {
+                if (arena[y].every(cell => cell !== null)) {
+                    arena.splice(y, 1);
+                    arena.unshift(Array(COLUMNS).fill(null));
+                    linesCleared++;
+                    y++;
+                }
+            }
+            if (linesCleared > 0) updateScore(linesCleared * 100 * linesCleared);
+        }
+
+        function updateScore(points) {
+            score += points;
+            scoreElement.textContent = score;
+            if (score >= 1000) {
+                alert("Поздравляем! Переход на следующий уровень.");
+                window.location.href = "https://www.youtube.com/";
+            }
+        }
+
+        function drop() {
+            pos.y++;
+            if (collide()) {
+                pos.y--;
+                merge();
+                clearLines();
+                piece = createPiece();
+                pos = { x: 4, y: 0 };
+                if (collide()) {
+                    alert(`Игра окончена! Счёт: ${score}`);
+                    arena.forEach(row => row.fill(null));
+                    score = 0;
+                    scoreElement.textContent = score;
+                }
+            }
+            dropCounter = 0;
+        }
+
+        function move(dir) {
+            pos.x += dir;
+            if (collide()) {
+                pos.x -= dir;
+                return false;
+            }
+            return true;
+        }
+
+        function rotatePiece() {
+            const rotated = piece.shape[0].map((_, i) =>
+                piece.shape.map(row => row[i]).reverse()
+            );
+            const previousShape = piece.shape;
+            piece.shape = rotated;
+            if (collide()) {
+                piece.shape = previousShape;
+                return false;
+            }
+            return true;
+        }
+
+        function update(time = 0) {
+            const deltaTime = time - lastTime;
+            lastTime = time;
+            dropCounter += deltaTime;
+            if (dropCounter > 1000) drop();
+            draw();
+            requestAnimationFrame(update);
+        }
+
+        function draw() {
+            context.fillStyle = "#000";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            arena.forEach((row, y) => {
+                row.forEach((value, x) => {
+                    if (value) {
+                        context.fillStyle = value;
+                        context.fillRect(x, y, 1, 1);
+                    }
+                });
+            });
+            context.fillStyle = piece.color;
+            piece.shape.forEach((row, y) => {
+                row.forEach((value, x) => {
+                    if (value) context.fillRect(x + pos.x, y + pos.y, 1, 1);
+                });
+            });
         }
     </script>
 </body>
