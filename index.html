@@ -1,437 +1,413 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Поздравление с Днем Рождения</title>
-    <style>
-        /* Обновленные стили открытки */
-        body {
-            margin: 0;
-            height: 100vh;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-            background: linear-gradient(45deg, #ffd3d3, #ffe8a1, #b5e8ff);
-        }
-
-        .card-container {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2;
-        }
-
-        .card {
-            width: 90%;
-            max-width: 400px;
-            height: 600px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            position: relative;
-            backdrop-filter: blur(8px);
-        }
-
-        .card h1 {
-            font-size: 32px;
-            color: #e91e63;
-            margin: 20px 0;
-            opacity: 0;
-            animation: textAppear 3s forwards 1s;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .card p {
-            font-size: 16px;
-            color: #333;
-            line-height: 1.6;
-            opacity: 0;
-            animation: textAppear 4s forwards 2s;
-            margin: 20px 0;
-        }
-
-        .button {
-            padding: 12px 25px;
-            font-size: 18px;
-            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
-            color: white;
-            border-radius: 25px;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-            transition: transform 0.3s;
-        }
-
-        .button:hover {
-            transform: scale(0.98);
-        }
-
-        /* Стили для лепестков */
-        .petals {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.petal {
-    position: absolute;
-    background-size: contain;
-    background-repeat: no-repeat;
-    opacity: 0;
-    animation: fall 6s linear infinite, drift 3s ease-in-out infinite alternate;
-}
-
-/* Анимация падения */
-@keyframes fall {
-    0% { 
-        transform: translateY(-10%) rotate(0deg); 
-        opacity: 0.8; 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Тетрис | С Днем Рождения!</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      touch-action: none;
     }
-    100% { 
-        transform: translateY(110vh) rotate(30deg); 
-        opacity: 0; 
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #1a1a1a;
+      color: white;
+      overflow: hidden;
     }
-}
-
-/* Легкое покачивание влево-вправо */
-@keyframes drift {
-    0% { transform: translateX(-5px); }
-    100% { transform: translateX(5px); }
-}
-
-
-        .petal1 { background-image: url('images/petal1.png'); }
-        .petal2 { background-image: url('images/petal2.png'); }
-
-
-        @keyframes textAppear {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fall {
-    0% { 
-        transform: translateY(-10%) rotate(0deg); 
-        opacity: 0.8; 
+    .menu-container {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #2c3e50, #3498db);
+      z-index: 2;
     }
-    100% { 
-        transform: translateY(110vh) rotate(30deg); 
-        opacity: 0; 
+    .birthday-card {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 2rem;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      max-width: 90%;
     }
-}
-
-
-        @keyframes drift {
-            0% { transform: translateX(-10px); }
-            100% { transform: translateX(10px); }
-        }
-
-        /* Стили для игры */
-        .game-container {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background: #1a1a1a;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 3;
-        }
-
-        #tetris {
-            width: 90vw;
-            height: 150vw;
-            max-width: 300px;
-            max-height: 500px;
-            border: 2px solid #444;
-            border-radius: 5px;
-        }
-
-        .score-board {
-            font-size: 24px;
-            color: white;
-            margin: 15px 0;
-        }
-
-        .controls {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            width: 90%;
-            max-width: 300px;
-            margin-top: 20px;
-            touch-action: manipulation;
-        }
-
-        .controls button {
-            font-size: 34px;
-            padding: 20px;
-            background: #444;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            min-height: 70px;
-        }
-
-        #rotate {
-            grid-column: 1 / 4;
-            font-size: 18px;
-            padding: 15px;
-        }
-
-        @media (max-width: 600px) {
-            .controls button {
-                font-size: 28px;
-                padding: 15px;
-            }
-        }
-    </style>
+    .birthday-card h1 {
+      color: #e74c3c;
+      margin-bottom: 1rem;
+      font-size: 2.5em;
+    }
+    .birthday-card p {
+      color: #2c3e50;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    .start-button {
+      background: #27ae60;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1.2em;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .start-button:active {
+      transform: scale(0.95);
+      background: #219a52;
+    }
+    .game-container {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #1a1a1a;
+      z-index: 3;
+    }
+    .game-header {
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    #tetris {
+      border: 2px solid #34495e;
+      background: #2c3e50;
+    }
+    .mobile-controls {
+      margin-top: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+      max-width: 400px;
+      padding: 0 10px;
+    }
+    .mobile-controls button {
+      background: #34495e;
+      border: none;
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 1.5em;
+      touch-action: none;
+    }
+    .mobile-controls button:active {
+      background: #2c3e50;
+    }
+    #rotate-btn {
+      grid-column: span 3;
+    }
+    @media (max-width: 600px) {
+      #tetris {
+        width: 80vw;
+        height: 80vw;
+      }
+    }
+  </style>
+  <!-- Дополнительные стили для падающих лепестков с физикой -->
+  <style>
+    /* Контейнер для падающих объектов располагается поверх всего контента */
+    .falling-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+    }
+    /* Стили для лепестков – используем указанные изображения */
+    .petal {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    .petal1 { background-image: url('images/petal1.png'); }
+    .petal2 { background-image: url('images/petal2.png'); }
+  </style>
 </head>
 <body>
-    <!-- Открытка -->
-    <div class="card-container" id="cardContainer">
-        <div class="card">
-            <h1>🎉 С Днем Рождения! 🎂</h1>
-            <p>Дорогой друг! Пусть этот день будет наполнен радостью, смехом и теплом близких! Желаю ярких впечатлений и исполнения всех желаний! 🎈</p>
-            <button class="button" onclick="showGame()">Поиграем! 🎮</button>
-        </div>
-        <div class="petals" id="petals"></div>
+  <div class="menu-container">
+    <div class="birthday-card">
+      <h1>🎉 С Днем Рождения! 🎂</h1>
+      <p>Желаем тебе ярких впечатлений, успехов во всех начинаниях и отличного настроения! 🚀</p>
+      <button class="start-button" onclick="startGame()">играй ы мою игру🎮</button>
     </div>
-
-    <!-- Игра -->
-    <div class="game-container" id="gameContainer">
-        <div class="score-board">Очки: <span id="score">0</span></div>
-        <canvas id="tetris"></canvas>
-        <div class="controls">
-            <button id="left">←</button>
-            <button id="down">↓</button>
-            <button id="right">→</button>
-            <button id="rotate">Повернуть</button>
-        </div>
+  </div>
+  <div class="game-container" id="gameContainer">
+    <div class="game-header">
+      <h2>Очки: <span id="score">0</span></h2>
     </div>
-
-    <script>
-        // Генератор лепестков
-        function createPetals() {
-            const container = document.getElementById('petals');
-            for(let i = 0; i < 150; i++) {
-                const petal = document.createElement('div');
-                const type = Math.random() > 0.5 ? 'petal1' : 'petal2';
-                petal.className = `petal ${type}`;
-                
-                petal.style.left = Math.random() * 100 + 'vw';
-                petal.style.width = (25 + Math.random() * 20) + 'px';
-                petal.style.height = petal.style.width;
-                petal.style.animation = `
-                    fall ${6 + Math.random() * 4}s linear infinite, 
-                    drift ${2 + Math.random() * 2}s ease-in-out infinite alternate
-                `;
-                petal.style.animationDelay = Math.random() * 5 + 's';
-                
-                container.appendChild(petal);
+    <canvas id="tetris"></canvas>
+    <div class="mobile-controls">
+      <button id="left">←</button>
+      <button id="down">↓</button>
+      <button id="right">→</button>
+      <button id="rotate-btn">↻ Поворот</button>
+    </div>
+  </div>
+  
+  <!-- Контейнер для падающих лепестков -->
+  <div class="falling-container" id="fallingContainer"></div>
+  
+  <script>
+    // Исходный код Tetris (оставлен без изменений)
+    const canvas = document.getElementById('tetris');
+    const context = canvas.getContext('2d');
+    const scoreElement = document.getElementById('score');
+    
+    const BLOCK_SIZE = 30;
+    const COLS = 10;
+    const ROWS = 20;
+    let score = 0;
+    let rewardTriggered = false;
+    
+    const SHAPES = [
+      [[1, 1, 1, 1]],
+      [[1, 1], [1, 1]],
+      [[1, 1, 1], [0, 1, 0]],
+      [[1, 1, 1], [1, 0, 0]],
+      [[1, 1, 1], [0, 0, 1]],
+      [[1, 1, 0], [0, 1, 1]],
+      [[0, 1, 1], [1, 1, 0]]
+    ];
+    
+    const COLORS = ['#e74c3c', '#2ecc71', '#9b59b6', '#f1c40f', '#3498db'];
+    const arena = Array(ROWS).fill().map(() => Array(COLS).fill(0));
+    
+    let currentPiece = null;
+    let gameLoop = null;
+    let gameSpeed = 1000;
+    
+    function initCanvas() {
+      canvas.width = COLS * BLOCK_SIZE;
+      canvas.height = ROWS * BLOCK_SIZE;
+      context.scale(BLOCK_SIZE, BLOCK_SIZE);
+    }
+    
+    function createPiece() {
+      const shape = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+      return {
+        shape,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        x: Math.floor(COLS / 2 - shape[0].length / 2),
+        y: 0
+      };
+    }
+    
+    function collide() {
+      return currentPiece.shape.some((row, dy) =>
+        row.some((value, dx) =>
+          value &&
+          (arena[currentPiece.y + dy]?.[currentPiece.x + dx] ||
+           currentPiece.x + dx < 0 ||
+           currentPiece.x + dx >= COLS ||
+           currentPiece.y + dy >= ROWS)
+        )
+      );
+    }
+    
+    function merge() {
+      currentPiece.shape.forEach((row, y) => {
+        row.forEach((value, x) => {
+          if (value) {
+            arena[currentPiece.y + y][currentPiece.x + x] = currentPiece.color;
+          }
+        });
+      });
+    }
+    
+    function clearLines() {
+      let linesCleared = 0;
+      for (let y = ROWS - 1; y >= 0; y--) {
+        if (arena[y].every(cell => cell)) {
+          arena.splice(y, 1);
+          arena.unshift(Array(COLS).fill(0));
+          linesCleared++;
+          y++;
+        }
+      }
+      if (linesCleared > 0) {
+        score += linesCleared * 100;
+        scoreElement.textContent = score;
+        if (score >= 100 && !rewardTriggered) {
+          rewardTriggered = true;
+          setTimeout(() => {
+            alert("🎉 Поздравляем! Вы получаете специальный приз!");
+            window.location.href = "https://youtube.com/shorts/naFvn4VteQk";
+          }, 500);
+        }
+        gameSpeed = Math.max(300, 1000 - score * 2);
+      }
+    }
+    
+    function move(dx) {
+      currentPiece.x += dx;
+      if (collide()) {
+        currentPiece.x -= dx;
+        return false;
+      }
+      return true;
+    }
+    
+    function rotate() {
+      const rotated = currentPiece.shape[0].map((_, i) =>
+        currentPiece.shape.map(row => row[i]).reverse()
+      );
+      const previousShape = currentPiece.shape;
+      currentPiece.shape = rotated;
+      if (collide()) {
+        currentPiece.shape = previousShape;
+      }
+    }
+    
+    function drop() {
+      currentPiece.y++;
+      if (collide()) {
+        currentPiece.y--;
+        merge();
+        clearLines();
+        currentPiece = createPiece();
+        if (collide()) {
+          alert(`Игра окончена! Счет: ${score}`);
+          resetGame();
+        }
+      }
+    }
+    
+    function draw() {
+      context.fillStyle = '#2c3e50';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      arena.forEach((row, y) => {
+        row.forEach((value, x) => {
+          if (value) {
+            context.fillStyle = value;
+            context.fillRect(x, y, 1, 1);
+          }
+        });
+      });
+      if (currentPiece) {
+        context.fillStyle = currentPiece.color;
+        currentPiece.shape.forEach((row, y) => {
+          row.forEach((value, x) => {
+            if (value) {
+              context.fillRect(currentPiece.x + x, currentPiece.y + y, 1, 1);
             }
+          });
+        });
+      }
+    }
+    
+    function update() {
+      drop();
+      draw();
+    }
+    
+    function resetGame() {
+      arena.forEach(row => row.fill(0));
+      score = 0;
+      rewardTriggered = false;
+      scoreElement.textContent = score;
+      currentPiece = createPiece();
+      gameSpeed = 1000;
+      clearInterval(gameLoop);
+      gameLoop = setInterval(update, gameSpeed);
+    }
+    
+    document.addEventListener('keydown', e => {
+      switch(e.key) {
+        case 'ArrowLeft': move(-1); break;
+        case 'ArrowRight': move(1); break;
+        case 'ArrowDown': drop(); break;
+        case 'ArrowUp': rotate(); break;
+      }
+      draw();
+    });
+    
+    document.getElementById('left').addEventListener('touchstart', () => move(-1));
+    document.getElementById('right').addEventListener('touchstart', () => move(1));
+    document.getElementById('down').addEventListener('touchstart', drop);
+    document.getElementById('rotate-btn').addEventListener('touchstart', rotate);
+    
+    function startGame() {
+      document.querySelector('.menu-container').style.display = 'none';
+      document.getElementById('gameContainer').style.display = 'flex';
+      initCanvas();
+      resetGame();
+    }
+    // Конец исходного кода Tetris
+  </script>
+  
+  <!-- Скрипт для падающих лепестков с физикой с очень высоким спавном -->
+  <script>
+    const fallingContainer = document.getElementById('fallingContainer');
+    
+    class FallingObject {
+      constructor() {
+        this.element = document.createElement('div');
+        // Всегда создаём лепесток, случайно выбираем тип 'petal1' или 'petal2'
+        this.element.className = Math.random() < 0.5 ? 'petal petal1' : 'petal petal2';
+        fallingContainer.appendChild(this.element);
+        this.x = Math.random() * window.innerWidth;
+        this.y = -50;
+        this.vx = (Math.random() - 0.5) * 2;
+        this.vy = Math.random() * 2 + 1;
+        this.rotation = Math.random() * 360;
+        this.rotationSpeed = (Math.random() - 0.5) * 5;
+        this.updateStyle();
+      }
+      updateStyle() {
+        this.element.style.left = this.x + 'px';
+        this.element.style.top = this.y + 'px';
+        this.element.style.transform = 'rotate(' + this.rotation + 'deg)';
+      }
+      update() {
+        // Применяем гравитацию и случайный ветер
+        this.vy += 0.05;
+        this.vx += (Math.random() - 0.5) * 0.1;
+        this.x += this.vx;
+        this.y += this.vy;
+        this.rotation += this.rotationSpeed;
+        this.updateStyle();
+      }
+      isOffScreen() {
+        return this.y > window.innerHeight + 50;
+      }
+    }
+    
+    let fallingObjects = [];
+    
+    function spawnFallingObject() {
+      // Спавним 5 лепестков за раз для очень высокой плотности
+      for (let i = 0; i < 5; i++) {
+        fallingObjects.push(new FallingObject());
+      }
+    }
+    
+    function updateFallingObjects() {
+      for (let i = fallingObjects.length - 1; i >= 0; i--) {
+        fallingObjects[i].update();
+        if (fallingObjects[i].isOffScreen()) {
+          fallingObjects[i].element.remove();
+          fallingObjects.splice(i, 1);
         }
-        createPetals();
-
-        // Инициализация игры
-        let canvas, context, scoreElement;
-        let BLOCK_SIZE, ROWS = 20, COLUMNS = 10;
-        let arena, piece, pos, score, dropCounter, lastTime;
-
-        const colors = ["#FF0D0D", "#0DC2FF", "#0DFF72", "#F538FF", "#FF8E0D"];
-        const pieces = [
-            [[1,1,1,1]], [[1,1],[1,1]], 
-            [[0,1,1],[1,1,0]], [[1,1,0],[0,1,1]], 
-            [[1,1,1],[0,1,0]], [[1,1,1],[1,0,0]], 
-            [[1,1,1],[0,0,1]]
-        ];
-
-        function showGame() {
-            document.getElementById('cardContainer').style.display = 'none';
-            document.getElementById('gameContainer').style.display = 'flex';
-            initializeGame();
-        }
-
-        function initializeGame() {
-            canvas = document.getElementById("tetris");
-            context = canvas.getContext("2d");
-            scoreElement = document.getElementById("score");
-
-            const setCanvasSize = () => {
-                const width = Math.min(window.innerWidth * 0.9, 300);
-                canvas.width = width;
-                canvas.height = width * 1.7;
-                BLOCK_SIZE = width / 10;
-                context.scale(BLOCK_SIZE, BLOCK_SIZE);
-            };
-            setCanvasSize();
-            window.addEventListener('resize', setCanvasSize);
-
-            arena = Array(ROWS).fill().map(() => Array(COLUMNS).fill(null));
-            score = 0;
-            piece = createPiece();
-            pos = {x: 4, y: 0};
-            dropCounter = 0;
-            lastTime = 0;
-
-            // Сенсорное управление
-            let touchStartX = 0, touchStartY = 0;
-            canvas.addEventListener('touchstart', e => {
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
-                e.preventDefault();
-            }, {passive: false});
-
-            canvas.addEventListener('touchend', e => {
-                const deltaX = e.changedTouches[0].clientX - touchStartX;
-                const deltaY = e.changedTouches[0].clientY - touchStartY;
-                if(Math.abs(deltaX) > 30 || Math.abs(deltaY) > 30) {
-                    if(Math.abs(deltaX) > Math.abs(deltaY)) {
-                        deltaX > 0 ? move(1) : move(-1);
-                    } else {
-                        deltaY > 0 ? drop() : rotatePiece();
-                    }
-                }
-                e.preventDefault();
-            }, {passive: false});
-
-            // Управление кнопками
-            document.getElementById("left").addEventListener("click", () => move(-1));
-            document.getElementById("right").addEventListener("click", () => move(1));
-            document.getElementById("down").addEventListener("click", drop);
-            document.getElementById("rotate").addEventListener("click", rotatePiece);
-
-            update();
-        }
-
-        // Логика игры (без изменений)
-        function createPiece() {
-            return {
-                shape: pieces[Math.floor(Math.random() * pieces.length)],
-                color: colors[Math.floor(Math.random() * colors.length)]
-            };
-        }
-
-        function collide() {
-            return piece.shape.some((row, y) => 
-                row.some((value, x) => 
-                    value !== 0 &&
-                    (arena[y + pos.y]?.[x + pos.x] !== null ||
-                    x + pos.x < 0 ||
-                    x + pos.x >= COLUMNS ||
-                    y + pos.y >= ROWS)
-                )
-            );
-        }
-
-        function merge() {
-            piece.shape.forEach((row, y) => {
-                row.forEach((value, x) => {
-                    if (value) arena[y + pos.y][x + pos.x] = piece.color;
-                });
-            });
-        }
-
-        function clearLines() {
-            let linesCleared = 0;
-            for (let y = ROWS - 1; y >= 0; y--) {
-                if (arena[y].every(cell => cell !== null)) {
-                    arena.splice(y, 1);
-                    arena.unshift(Array(COLUMNS).fill(null));
-                    linesCleared++;
-                    y++;
-                }
-            }
-            if (linesCleared > 0) updateScore(linesCleared * 100 * linesCleared);
-        }
-
-        function updateScore(points) {
-            score += points;
-            scoreElement.textContent = score;
-            if (score >= 1000) {
-                alert("Поздравляем! Переход на следующий уровень.");
-                window.location.href = "https://www.youtube.com/";
-            }
-        }
-
-        function drop() {
-            pos.y++;
-            if (collide()) {
-                pos.y--;
-                merge();
-                clearLines();
-                piece = createPiece();
-                pos = { x: 4, y: 0 };
-                if (collide()) {
-                    alert(`Игра окончена! Счёт: ${score}`);
-                    arena.forEach(row => row.fill(null));
-                    score = 0;
-                    scoreElement.textContent = score;
-                }
-            }
-            dropCounter = 0;
-        }
-
-        function move(dir) {
-            pos.x += dir;
-            if (collide()) {
-                pos.x -= dir;
-                return false;
-            }
-            return true;
-        }
-
-        function rotatePiece() {
-            const rotated = piece.shape[0].map((_, i) =>
-                piece.shape.map(row => row[i]).reverse()
-            );
-            const previousShape = piece.shape;
-            piece.shape = rotated;
-            if (collide()) {
-                piece.shape = previousShape;
-                return false;
-            }
-            return true;
-        }
-
-        function update(time = 0) {
-            const deltaTime = time - lastTime;
-            lastTime = time;
-            dropCounter += deltaTime;
-            if (dropCounter > 1000) drop();
-            draw();
-            requestAnimationFrame(update);
-        }
-
-        function draw() {
-            context.fillStyle = "#000";
-            context.fillRect(0, 0, canvas.width, canvas.height);
-            arena.forEach((row, y) => {
-                row.forEach((value, x) => {
-                    if (value) {
-                        context.fillStyle = value;
-                        context.fillRect(x, y, 1, 1);
-                    }
-                });
-            });
-            context.fillStyle = piece.color;
-            piece.shape.forEach((row, y) => {
-                row.forEach((value, x) => {
-                    if (value) context.fillRect(x + pos.x, y + pos.y, 1, 1);
-                });
-            });
-        }
-    </script>
+      }
+      requestAnimationFrame(updateFallingObjects);
+    }
+    
+    // Очень высокий спавн: каждые 20 мс
+    setInterval(spawnFallingObject, 50);
+    updateFallingObjects();
+  </script>
 </body>
 </html>
