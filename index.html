@@ -1,352 +1,433 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Тетрис | С Днем Рождения!</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            touch-action: manipulation;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background: #1a1a1a;
-            color: white;
-            overflow: hidden;
-        }
-
-        .menu-container {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #2c3e50, #3498db);
-            z-index: 2;
-        }
-
-        .birthday-card {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            max-width: 90%;
-        }
-
-        .birthday-card h1 {
-            color: #e74c3c;
-            margin-bottom: 1rem;
-            font-size: 2.5em;
-        }
-
-        .birthday-card p {
-            color: #2c3e50;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .start-button {
-            background: #27ae60;
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            font-size: 1.2em;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: transform 0.2s, background 0.2s;
-        }
-
-        .start-button:active {
-            transform: scale(0.95);
-            background: #219a52;
-        }
-
-        .game-container {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: #1a1a1a;
-            z-index: 3;
-        }
-
-        .game-header {
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        #tetris {
-            border: 2px solid #34495e;
-            background: #2c3e50;
-        }
-
-        .mobile-controls {
-            margin-top: 1.5rem;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            width: 100%;
-            max-width: 400px;
-            padding: 0 10px;
-        }
-
-        .mobile-controls button {
-            background: #34495e;
-            border: none;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 1.5em;
-            touch-action: none;
-        }
-
-        .mobile-controls button:active {
-            background: #2c3e50;
-        }
-
-        #rotate-btn {
-            grid-column: span 3;
-        }
-
-        @media (max-width: 600px) {
-            #tetris {
-                width: 80vw;
-                height: 80vw;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Мобильный Тетрис | С Днем Рождения!</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      touch-action: none;
+    }
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #1a1a1a;
+      color: white;
+      overflow: hidden;
+    }
+    .menu-container {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #2c3e50, #3498db);
+      z-index: 2;
+    }
+    .birthday-card {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 1.5rem;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      max-width: 95%;
+      margin: 0 10px;
+    }
+    .birthday-card h1 {
+      color: #e74c3c;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+    .birthday-card p {
+      color: #2c3e50;
+      margin-bottom: 1rem;
+      line-height: 1.4;
+      font-size: 0.9rem;
+    }
+    .start-button {
+      background: #27ae60;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .start-button:active {
+      transform: scale(0.95);
+      background: #219a52;
+    }
+    .game-container {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #1a1a1a;
+      z-index: 3;
+    }
+    .game-header {
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    #tetris {
+      border: 2px solid #34495e;
+      background: #2c3e50;
+      width: 85vw;
+      height: 85vw;
+      max-width: 320px;
+      max-height: 320px;
+    }
+    .mobile-controls {
+      margin-top: 1rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      width: 100%;
+      max-width: 320px;
+      padding: 0 10px;
+    }
+    .mobile-controls button {
+      background: #34495e;
+      border: none;
+      color: white;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      touch-action: none;
+    }
+    .mobile-controls button:active {
+      background: #2c3e50;
+    }
+    #rotate-btn {
+      grid-column: span 3;
+      padding: 12px;
+      font-size: 1rem;
+    }
+    .falling-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .petal {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    .petal1 { background-image: url('images/petal1.png'); }
+    .petal2 { background-image: url('images/petal2.png'); }
+  </style>
 </head>
 <body>
-    <div class="menu-container">
-        <div class="birthday-card">
-            <h1>🎉 С Днем Рождения! 🎂</h1>
-            <p>Желаем тебе ярких впечатлений, успехов во всех начинаниях и отличного настроения! 🚀</p>
-            <button class="start-button" onclick="startGame()">Играть в Тетрис 🎮</button>
-        </div>
+  <div class="menu-container">
+    <div class="birthday-card">
+      <h1>🎉 С Днем Рождения! 🎂</h1>
+      <p>Желаем ярких впечатлений и отличного настроения! 🚀</p>
+      <button class="start-button" onclick="startGame()">Играть 🎮</button>
     </div>
-
-    <div class="game-container" id="gameContainer">
-        <div class="game-header">
-            <h2>Очки: <span id="score">0</span></h2>
-        </div>
-        <canvas id="tetris"></canvas>
-        <div class="mobile-controls">
-            <button id="left">←</button>
-            <button id="down">↓</button>
-            <button id="right">→</button>
-            <button id="rotate-btn">↻ Поворот</button>
-        </div>
+  </div>
+  <div class="game-container" id="gameContainer">
+    <div class="game-header">
+      <h2>Очки: <span id="score">0</span></h2>
     </div>
+    <canvas id="tetris"></canvas>
+    <div class="mobile-controls">
+      <button id="left">←</button>
+      <button id="down">↓</button>
+      <button id="right">→</button>
+      <button id="rotate-btn">↻ Поворот</button>
+    </div>
+  </div>
+  <div class="falling-container" id="fallingContainer"></div>
 
-    <script>
-        const canvas = document.getElementById('tetris');
-        const context = canvas.getContext('2d');
-        const scoreElement = document.getElementById('score');
-        
-        const BLOCK_SIZE = 30;
-        const COLS = 10;
-        const ROWS = 20;
-        let score = 0;
-        let rewardTriggered = false;
-        
-        const SHAPES = [
-            [[1, 1, 1, 1]],
-            [[1, 1], [1, 1]],
-            [[1, 1, 1], [0, 1, 0]],
-            [[1, 1, 1], [1, 0, 0]],
-            [[1, 1, 1], [0, 0, 1]],
-            [[1, 1, 0], [0, 1, 1]],
-            [[0, 1, 1], [1, 1, 0]]
-        ];
-        
-        const COLORS = ['#e74c3c', '#2ecc71', '#9b59b6', '#f1c40f', '#3498db'];
-        const arena = Array(ROWS).fill().map(() => Array(COLS).fill(0));
-        
-        let currentPiece = null;
-        let gameLoop = null;
-        let gameSpeed = 1000;
-
-        function initCanvas() {
-            canvas.width = COLS * BLOCK_SIZE;
-            canvas.height = ROWS * BLOCK_SIZE;
-            context.scale(BLOCK_SIZE, BLOCK_SIZE);
-        }
-
-        function createPiece() {
-            const shape = SHAPES[Math.floor(Math.random() * SHAPES.length)];
-            return {
-                shape,
-                color: COLORS[Math.floor(Math.random() * COLORS.length)],
-                x: Math.floor(COLS/2 - shape[0].length/2),
-                y: 0
-            };
-        }
-
-        function collide() {
-            return currentPiece.shape.some((row, dy) => 
-                row.some((value, dx) => 
-                    value && 
-                    (arena[currentPiece.y + dy]?.[currentPiece.x + dx] || 
-                    currentPiece.x + dx < 0 || 
-                    currentPiece.x + dx >= COLS ||
-                    currentPiece.y + dy >= ROWS)
-                )
-            );
-        }
-
-        function merge() {
-            currentPiece.shape.forEach((row, y) => {
-                row.forEach((value, x) => {
-                    if (value) {
-                        arena[currentPiece.y + y][currentPiece.x + x] = currentPiece.color;
-                    }
-                });
-            });
-        }
-
-        function clearLines() {
-            let linesCleared = 0;
-            
-            for (let y = ROWS - 1; y >= 0; y--) {
-                if (arena[y].every(cell => cell)) {
-                    arena.splice(y, 1);
-                    arena.unshift(Array(COLS).fill(0));
-                    linesCleared++;
-                    y++;
-                }
-            }
-            
-            if (linesCleared > 0) {
-                score += linesCleared * 100;
-                scoreElement.textContent = score;
-                
-                if (score >= 1000 && !rewardTriggered) {
-                    rewardTriggered = true;
-                    setTimeout(() => {
-                        alert("🎉 Поздравляем! Вы получаете специальный приз!");
-                        window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-                    }, 500);
-                }
-                
-                gameSpeed = Math.max(300, 1000 - score * 2);
-            }
-        }
-
-        function move(dx) {
-            currentPiece.x += dx;
-            if (collide()) {
-                currentPiece.x -= dx;
-                return false;
-            }
-            return true;
-        }
-
-        function rotate() {
-            const rotated = currentPiece.shape[0].map((_, i) =>
-                currentPiece.shape.map(row => row[i]).reverse()
-            );
-            
-            const previousShape = currentPiece.shape;
-            currentPiece.shape = rotated;
-            
-            if (collide()) {
-                currentPiece.shape = previousShape;
-            }
-        }
-
-        function drop() {
-            currentPiece.y++;
-            if (collide()) {
-                currentPiece.y--;
-                merge();
-                clearLines();
-                currentPiece = createPiece();
-                
-                if (collide()) {
-                    alert(`Игра окончена! Счет: ${score}`);
-                    resetGame();
-                }
-            }
-        }
-
-        function draw() {
-            context.fillStyle = '#2c3e50';
-            context.fillRect(0, 0, canvas.width, canvas.height);
-            
-            arena.forEach((row, y) => {
-                row.forEach((value, x) => {
-                    if (value) {
-                        context.fillStyle = value;
-                        context.fillRect(x, y, 1, 1);
-                    }
-                });
-            });
-            
-            if (currentPiece) {
-                context.fillStyle = currentPiece.color;
-                currentPiece.shape.forEach((row, y) => {
-                    row.forEach((value, x) => {
-                        if (value) {
-                            context.fillRect(
-                                currentPiece.x + x,
-                                currentPiece.y + y,
-                                1, 1
-                            );
-                        }
-                    });
-                });
-            }
-        }
-
-        function update() {
-            drop();
-            draw();
-        }
-
-        function resetGame() {
-            arena.forEach(row => row.fill(0));
-            score = 0;
-            rewardTriggered = false;
-            scoreElement.textContent = score;
-            currentPiece = createPiece();
-            gameSpeed = 1000;
-            clearInterval(gameLoop);
-            gameLoop = setInterval(update, gameSpeed);
-        }
-
-        document.addEventListener('keydown', e => {
-            switch(e.key) {
-                case 'ArrowLeft': move(-1); break;
-                case 'ArrowRight': move(1); break;
-                case 'ArrowDown': drop(); break;
-                case 'ArrowUp': rotate(); break;
-            }
-            draw();
+  <script>
+    const canvas = document.getElementById('tetris');
+    const context = canvas.getContext('2d');
+    const scoreElement = document.getElementById('score');
+    
+    const BLOCK_SIZE = 20;
+    const COLS = 10;
+    const ROWS = 20;
+    let score = 0;
+    let rewardTriggered = false;
+    
+    const SHAPES = [
+      [[1,1,1,1]],
+      [[1,1],[1,1]],
+      [[1,1,1],[0,1,0]],
+      [[1,1,1],[1,0,0]],
+      [[1,1,1],[0,0,1]],
+      [[1,1,0],[0,1,1]],
+      [[0,1,1],[1,1,0]]
+    ];
+    
+    const COLORS = ['#e74c3c', '#2ecc71', '#9b59b6', '#f1c40f', '#3498db'];
+    const arena = Array(ROWS).fill().map(() => Array(COLS).fill(0));
+    let currentPiece = null;
+    let gameSpeed = 1000;
+    let lastTime = 0;
+    let dropCounter = 0;
+    
+    function initCanvas() {
+      canvas.width = COLS * BLOCK_SIZE;
+      canvas.height = ROWS * BLOCK_SIZE;
+      context.scale(BLOCK_SIZE, BLOCK_SIZE);
+    }
+    
+    function createPiece() {
+      const shape = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+      return {
+        shape,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        x: Math.floor(COLS/2 - shape[0].length/2),
+        y: 0
+      };
+    }
+    
+    function collide() {
+      return currentPiece.shape.some((row, dy) =>
+        row.some((value, dx) =>
+          value && (arena[currentPiece.y + dy]?.[currentPiece.x + dx] ||
+          currentPiece.x + dx < 0 ||
+          currentPiece.x + dx >= COLS ||
+          currentPiece.y + dy >= ROWS)
+        )
+      );
+    }
+    
+    function merge() {
+      currentPiece.shape.forEach((row, y) => {
+        row.forEach((value, x) => {
+          if (value) arena[currentPiece.y + y][currentPiece.x + x] = currentPiece.color;
         });
-
-        document.getElementById('left').addEventListener('touchstart', () => move(-1));
-        document.getElementById('right').addEventListener('touchstart', () => move(1));
-        document.getElementById('down').addEventListener('touchstart', drop);
-        document.getElementById('rotate-btn').addEventListener('touchstart', rotate);
-
-        function startGame() {
-            document.querySelector('.menu-container').style.display = 'none';
-            document.getElementById('gameContainer').style.display = 'flex';
-            initCanvas();
-            resetGame();
+      });
+    }
+    
+    function clearLines() {
+      let linesCleared = 0;
+      for (let y = ROWS-1; y >= 0; y--) {
+        if (arena[y].every(cell => cell)) {
+          arena.splice(y, 1);
+          arena.unshift(Array(COLS).fill(0));
+          linesCleared++;
+          y++;
         }
-    </script>
+      }
+      if (linesCleared) {
+        score += linesCleared * 100;
+        scoreElement.textContent = score;
+        if (score >= 100 && !rewardTriggered) {
+          rewardTriggered = true;
+          setTimeout(() => {
+            alert("🎉 Поздравляем! Вы получаете специальный приз!");
+            window.location.href = "https://youtube.com/shorts/naFvn4VteQk";
+          }, 500);
+        }
+        gameSpeed = Math.max(300, 1000 - score * 2);
+      }
+    }
+    
+    function move(dx) {
+      currentPiece.x += dx;
+      if (collide()) {
+        currentPiece.x -= dx;
+        return false;
+      }
+      return true;
+    }
+    
+    function rotate() {
+      const rotated = currentPiece.shape[0].map((_, i) =>
+        currentPiece.shape.map(row => row[i]).reverse()
+      );
+      const prevShape = currentPiece.shape;
+      currentPiece.shape = rotated;
+      if (collide()) currentPiece.shape = prevShape;
+    }
+    
+    function drop() {
+      currentPiece.y++;
+      if (collide()) {
+        currentPiece.y--;
+        merge();
+        clearLines();
+        currentPiece = createPiece();
+        if (collide()) {
+          alert(`Игра окончена! Счет: ${score}`);
+          resetGame();
+        }
+      }
+    }
+    
+    function draw() {
+      context.fillStyle = '#2c3e50';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      arena.forEach((row, y) => {
+        row.forEach((value, x) => {
+          if (value) {
+            context.fillStyle = value;
+            context.fillRect(x, y, 1, 1);
+          }
+        });
+      });
+      context.fillStyle = currentPiece.color;
+      currentPiece.shape.forEach((row, y) => {
+        row.forEach((value, x) => {
+          if (value) {
+            context.fillRect(currentPiece.x + x, currentPiece.y + y, 1, 1);
+          }
+        });
+      });
+    }
+    
+    function update(timestamp) {
+      const deltaTime = timestamp - lastTime;
+      lastTime = timestamp;
+      dropCounter += deltaTime;
+      
+      if (dropCounter > gameSpeed) {
+        drop();
+        dropCounter = 0;
+      }
+      
+      draw();
+      requestAnimationFrame(update);
+    }
+    
+    function resetGame() {
+      arena.forEach(row => row.fill(0));
+      score = 0;
+      rewardTriggered = false;
+      scoreElement.textContent = score;
+      currentPiece = createPiece();
+      gameSpeed = 1000;
+    }
+    
+    // Мобильное управление
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const touchThreshold = 30;
+    
+    canvas.addEventListener('touchstart', e => {
+      e.preventDefault();
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, {passive: false});
+    
+    canvas.addEventListener('touchend', e => {
+      e.preventDefault();
+      const touchEndX = e.changedTouches[0].clientX;
+      const touchEndY = e.changedTouches[0].clientY;
+      const dx = touchEndX - touchStartX;
+      const dy = touchEndY - touchStartY;
+      
+      if (Math.abs(dx) > touchThreshold) {
+        move(dx > 0 ? 1 : -1);
+        draw();
+      }
+      if (dy > touchThreshold) {
+        drop();
+        draw();
+      }
+    }, {passive: false});
+    
+    // Кнопки управления
+    document.getElementById('left').addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      move(-1);
+      draw();
+    }, { passive: false });
+
+    document.getElementById('right').addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      move(1);
+      draw();
+    }, { passive: false });
+
+    document.getElementById('down').addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      drop();
+      draw();
+    }, { passive: false });
+
+    document.getElementById('rotate-btn').addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      rotate();
+      draw();
+    }, { passive: false });
+    
+    function startGame() {
+      document.querySelector('.menu-container').style.display = 'none';
+      document.getElementById('gameContainer').style.display = 'flex';
+      initCanvas();
+      resetGame();
+      requestAnimationFrame(update);
+    }
+    
+    // Лепестки с интенсивной анимацией
+    class Petal {
+      constructor() {
+        this.element = document.createElement('div');
+        this.element.className = `petal petal${Math.random() < 0.5 ? 1 : 2}`;
+        document.getElementById('fallingContainer').appendChild(this.element);
+        this.reset();
+      }
+      
+      reset() {
+        this.x = Math.random() * window.innerWidth;
+        this.y = -50;
+        this.vx = (Math.random() - 0.5) * 3;
+        this.vy = Math.random() * 3 + 1;
+        this.rotation = Math.random() * 360;
+        this.rotationSpeed = (Math.random() - 0.5) * 10;
+        this.update();
+      }
+      
+      update() {
+        this.vy += 0.1;
+        this.vx += (Math.random() - 0.5) * 0.2;
+        this.x += this.vx;
+        this.y += this.vy;
+        this.rotation += this.rotationSpeed;
+        
+        this.element.style.transform = 
+          `translate(${this.x}px, ${this.y}px) rotate(${this.rotation}deg)`;
+        
+        if (this.y > window.innerHeight + 100) this.reset();
+      }
+    }
+    
+    // Интенсивный спавн лепестков
+    const petals = [];
+    setInterval(() => {
+      for (let i = 0; i < 5; i++) {
+        petals.push(new Petal());
+      }
+      if (petals.length > 200) {
+        petals.splice(0, 50).forEach(p => p.element.remove());
+      }
+    }, 50);
+    
+    function animate() {
+      petals.forEach(p => p.update());
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
 </body>
 </html>
